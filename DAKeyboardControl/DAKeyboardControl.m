@@ -261,7 +261,16 @@ static BOOL isPanning;
 
 - (void)inputKeyboardDidShow:(NSNotification *)notification
 {
-    // Grab the keyboard view
+    // Grab the keyboard view if we have access to it
+    if ([self.keyboardActiveInput respondsToSelector:@selector(inputAccessoryView)]) {
+        self.keyboardActiveView = self.keyboardActiveInput.inputAccessoryView.superview;
+    }
+    
+    // get out of dodge if we couldn't get the instance
+    if (!self.keyboardActiveView) {
+        return;
+    }
+
     self.keyboardActiveView = self.keyboardActiveInput.inputAccessoryView.superview;
     self.keyboardActiveView.hidden = NO;
     
